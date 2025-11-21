@@ -1,5 +1,3 @@
-# "Exemple simple de workflow GitHub Actions qui met un site statique en ligne"
-
 name: "Vérification grammaire/orthographe"
 
 # La section "on:" contrôle dans quels cas ce workflow va s'exécuter
