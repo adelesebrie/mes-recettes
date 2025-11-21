@@ -1,23 +1,10 @@
 name: "Vérification grammaire/orthographe"
-
-# La section "on:" contrôle dans quels cas ce workflow va s'exécuter
-#
-# Plus de documentation ici :
-# - https://docs.github.com/fr/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow
-# - https://docs.github.com/fr/actions/reference/workflows-and-actions/events-that-trigger-workflows#push
 on: push
-  # Branche main + tags uniquement (on ne veut pas que la moindre branche de
-  # développement change la version du site qui est en ligne)
   push:
     branches: ["main"]
     tags: ["*"]
   pull_request:
     branches: ["main"]
-
-# La section "jobs:" indique ce qui se passe quand ce workflow s'exécute
-#
-# Plus de documentation ici :
-# https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax
 jobs:
   grammaire_et_orthographe:
     runs-on: ubuntu-latest
@@ -29,34 +16,24 @@ jobs:
         uses: actions/checkout@v5
       - name: Exécution de grammalint
         run: python -m grammalint -i recettes/**/*.md
-
-  # Ce job construit les pages HTML et les empaquete dans un artefact
   build:
-    # GitHub fournit des runners préinstallés avec plusieurs versions de
-    # Windows/macOS/Linux, il faut spécifier ce qu'on veut. Pour utiliser des
-    # conteneurs Docker, on doit utiliser un runner Linux/Ubuntu.
     runs-on: ubuntu-latest
 
-    # On utilise ici le générateur de site statique fourni par Sonny via un
-    # conteneur Docker...
+  
     container: docker://gitlab-registry.in2p3.fr/sonny.lion/astro-chef:1.1.2
     env:
-      # ...avec une configuration adaptée pour GitHub Pages qui utilise des
-      # URL du style https://hadrieng2.github.io/recettes/ et pas
-      # https://recettes-abcdef.github.io/ comme le fait GitLab dans sa
-      # configuration par défaut, ce qui casse les chemins de fichiers absolus.
+     
       BASE_URL: "/recettes"
 
-    # Les étapes indiquent les actions à effectuer, sous forme de séquence
+    
     steps:
-      # Certaines actions sont effectuées par des modules prêts à l'emploi,
-      # fournis par GitHub ou des tierces parties...
+      
       - name: Check out git repository
-        # Documentation sur https://github.com/actions/checkout/
+        
         uses: actions/checkout@v5
 
-      # ...tandis que d'autres exécutent un script spécifié par l'utilisateur,
-      # ici du bash exécuté au sein d'une image Docker préparée par Sonny
+      
+      
       - name: Build the static website
         run: |
           # On déplace les recettes à l'endroit attendu par astro-chef
@@ -66,16 +43,7 @@ jobs:
           # On ramène ces pages à un endroit où le runner GitHub peut les voir
           mv $APP_DIR/dist .
 
-      # Pour des raisons de sécurité, GitHub encouragent fortement à ne pas
-      # donner directement la permission de mettre le site en ligne à un job
-      # complexe utilisant du code qu'on n'a pas sérieusement audité au niveau
-      # sécu. A la place, ils recommandent d'utiliser deux jobs:
-      #
-      # - Ce premier job génère le site et empaquète les fichiers résultants
-      #   au sein d'un artefact (grosso modo une archive compressée).
-      # - Un deuxième job (ici "deploy") récupère cet artefact et met le site en
-      #   ligne. Il ne fait rien d'autre. Seul ce second job est doté des
-      #   privilèges spéciaux permettant la mise en ligne d'un site.
+     
       - name: Generate and upload the artifact
         # Documentation sur https://github.com/actions/upload-pages-artifact
         uses: actions/upload-pages-artifact@v4
