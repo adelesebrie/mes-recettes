@@ -1,13 +1,13 @@
 ---
 titre: "Save_me"
-description: "J'avoue ej galère deja à comprendre je ne vais pas me faire chiez à faire une recette de crêpe"
+description: "J'avoue que je galère déjà à comprendre je ne vais pas me faire chiez à faire une recette de crêpe."
 auteur: "<adele_seb>"
 date: 2025-10-06
-temps_de_préparation: "3 jours"
-temps_de_cuisson: "ca depend du cerveau"
+temps_de_préparation:"3 jours"
+temps_de_cuisson: "ça dépend du cerveau"
 temps_de_repos: "la vie entière"
 difficulté: "j'ai connu mieux"
-portions: pas compté
+portions: 
 catégorie: "Salade de patte"
 coût: "€"
 tags:
