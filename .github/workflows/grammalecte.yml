@@ -1,4 +1,4 @@
-# Exemple simple de workflow GitHub Actions qui met un site statique en ligne"
+# "Exemple simple de workflow GitHub Actions qui met un site statique en ligne"
 
 name: "Vérification grammaire/orthographe"
 
